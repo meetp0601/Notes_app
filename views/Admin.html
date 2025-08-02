@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portal - ToyJoy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F3F4F6;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Nunito', sans-serif;
+            color: #111827;
+        }
+        .sidebar-link {
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+        .sidebar-link.active {
+            background-color: #DBEAFE;
+            color: #1E40AF;
+            font-weight: 600;
+        }
+        .status-processing { background-color: #FEF3C7; color: #92400E; }
+        .status-shipped { background-color: #DBEAFE; color: #1E40AF; }
+        .status-delivered { background-color: #D1FAE5; color: #065F46; }
+    </style>
+</head>
+<body class="flex h-screen">
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="w-64 bg-white shadow-md flex-shrink-0 flex flex-col transition-all duration-300">
+        <div class="p-6">
+            <h1 class="text-3xl font-black text-blue-800">ToyJoy Admin</h1>
+        </div>
+        <nav id="sidebar-nav" class="mt-6 px-4 flex-grow">
+            <a href="#dashboard" class="sidebar-link active flex items-center p-3 rounded-lg">
+                <i class="fas fa-tachometer-alt fa-fw mr-3"></i> Dashboard
+            </a>
+            <a href="#orders" class="sidebar-link flex items-center p-3 rounded-lg text-gray-600 hover:bg-gray-100">
+                <i class="fas fa-box fa-fw mr-3"></i> Orders
+            </a>
+            <a href="#products" class="sidebar-link flex items-center p-3 rounded-lg text-gray-600 hover:bg-gray-100">
+                <i class="fas fa-tags fa-fw mr-3"></i> Products
+            </a>
+            <a href="#customers" class="sidebar-link flex items-center p-3 rounded-lg text-gray-600 hover:bg-gray-100">
+                <i class="fas fa-users fa-fw mr-3"></i> Customers
+            </a>
+            <a href="#analytics" class="sidebar-link flex items-center p-3 rounded-lg text-gray-600 hover:bg-gray-100">
+                <i class="fas fa-chart-line fa-fw mr-3"></i> Analytics
+            </a>
+        </nav>
+        <div class="p-4 border-t">
+            <a href="#" class="flex items-center p-3 rounded-lg text-gray-600 hover:bg-gray-100">
+                <i class="fas fa-sign-out-alt fa-fw mr-3"></i> Logout
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <!-- Top Bar -->
+        <header class="bg-white shadow-sm p-4 flex justify-between items-center">
+            <button id="menu-toggle" class="lg:hidden text-gray-600">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+            <h2 id="page-title" class="text-2xl font-bold">Dashboard Overview</h2>
+            <div class="flex items-center">
+                <span class="mr-4 font-semibold hidden sm:inline">Admin User</span>
+                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Admin Avatar" class="w-10 h-10 rounded-full">
+            </div>
+        </header>
+
+        <!-- Content Area -->
+        <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 p-4 sm:p-8">
+            <!-- Dashboard Page -->
+            <div id="dashboard-page" class="page-content">
+                <!-- Stat Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-lg font-semibold text-gray-500">Total Sales</h3>
+                        <p class="text-3xl font-bold mt-2">₹1,24,500</p>
+                        <p class="text-sm text-green-500 mt-1">+12% from last month</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-lg font-semibold text-gray-500">New Orders</h3>
+                        <p class="text-3xl font-bold mt-2">32</p>
+                        <p class="text-sm text-green-500 mt-1">+5 from yesterday</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-lg font-semibold text-gray-500">New Customers</h3>
+                        <p class="text-3xl font-bold mt-2">18</p>
+                        <p class="text-sm text-red-500 mt-1">-2 from yesterday</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-lg font-semibold text-gray-500">Pending Shipments</h3>
+                        <p class="text-3xl font-bold mt-2">5</p>
+                        <p class="text-sm text-gray-500 mt-1">Ready to be dispatched</p>
+                    </div>
+                </div>
+                <!-- Sales Chart & Recent Orders -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
+                    <div class="lg:col-span-2 bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-bold mb-4">Sales Over Time</h3>
+                        <canvas id="salesChart"></canvas>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-bold mb-4">Recent Orders</h3>
+                        <div class="space-y-4">
+                            <!-- Recent orders list -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Orders Page -->
+            <div id="orders-page" class="page-content hidden">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <div class="flex justify-between items-center mb-4">
+                        <input type="text" placeholder="Search orders..." class="w-1/3 p-2 border rounded-md">
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                           <!-- Orders table content -->
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products Page -->
+            <div id="products-page" class="page-content hidden">
+                 <div class="bg-white p-6 rounded-lg shadow-md">
+                    <div class="flex justify-between items-center mb-4">
+                        <input type="text" placeholder="Search products..." class="w-1/3 p-2 border rounded-md">
+                        <button class="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 transition">Add New Product</button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <!-- Products table content -->
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Customers Page -->
+            <div id="customers-page" class="page-content hidden">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <div class="flex justify-between items-center mb-4">
+                        <input type="text" placeholder="Search customers..." class="w-1/3 p-2 border rounded-md">
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <!-- Customers table content -->
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analytics Page -->
+            <div id="analytics-page" class="page-content hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-bold mb-4">Top Selling Products</h3>
+                        <canvas id="topProductsChart"></canvas>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-bold mb-4">Sales by Category</h3>
+                        <canvas id="salesByCategoryChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Chart Data ---
+            const salesChartCtx = document.getElementById('salesChart').getContext('2d');
+            new Chart(salesChartCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                    datasets: [{
+                        label: 'Sales (₹)',
+                        data: [12000, 19000, 15000, 25000, 22000, 30000, 28000],
+                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        borderWidth: 2,
+                        tension: 0.4
+                    }]
+                },
+                options: { responsive: true, scales: { y: { beginAtZero: true } } }
+            });
+
+            const topProductsCtx = document.getElementById('topProductsChart').getContext('2d');
+            new Chart(topProductsCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Building Blocks', 'RC Truck', 'Art Kit', 'Teddy Bear'],
+                    datasets: [{
+                        data: [300, 150, 100, 80],
+                        backgroundColor: ['#3B82F6', '#F97316', '#10B981', '#F59E0B'],
+                    }]
+                },
+                options: { responsive: true }
+            });
+
+            const salesByCategoryCtx = document.getElementById('salesByCategoryChart').getContext('2d');
+            new Chart(salesByCategoryCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Blocks', 'RC', 'Art', 'Plush', 'Educational'],
+                    datasets: [{
+                        label: 'Sales (₹)',
+                        data: [45000, 32000, 25000, 18000, 15000],
+                        backgroundColor: '#3B82F6',
+                    }]
+                },
+                options: { responsive: true }
+            });
+
+            // --- Page Navigation Logic ---
+            const sidebarNav = document.getElementById('sidebar-nav');
+            const pageTitle = document.getElementById('page-title');
+            const pages = document.querySelectorAll('.page-content');
+
+            const pageTitles = {
+                dashboard: 'Dashboard Overview',
+                orders: 'Manage Orders',
+                products: 'Manage Products',
+                customers: 'Customer List',
+                analytics: 'Sales Analytics'
+            };
+
+            function updatePage(hash) {
+                const section = hash.substring(1) || 'dashboard';
+                
+                pages.forEach(page => page.classList.add('hidden'));
+                document.getElementById(`${section}-page`).classList.remove('hidden');
+
+                document.querySelectorAll('.sidebar-link').forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${section}`) {
+                        link.classList.add('active');
+                    }
+                });
+                pageTitle.textContent = pageTitles[section];
+            }
+
+            sidebarNav.addEventListener('click', e => {
+                const link = e.target.closest('a');
+                if (link) {
+                    const hash = link.getAttribute('href');
+                    if (hash.startsWith('#')) {
+                        e.preventDefault();
+                        window.location.hash = hash;
+                    }
+                }
+            });
+
+            window.addEventListener('hashchange', () => updatePage(window.location.hash));
+            updatePage(window.location.hash);
+
+            // --- Mobile Sidebar Toggle ---
+            const menuToggle = document.getElementById('menu-toggle');
+            const sidebar = document.getElementById('sidebar');
+            menuToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+                sidebar.classList.toggle('absolute');
+                sidebar.classList.toggle('z-20');
+            });
+
+            // --- Dynamic Content for Tables ---
+            // (In a real app, this data would come from an API)
+            const recentOrdersContainer = document.querySelector('#dashboard-page .space-y-4');
+            recentOrdersContainer.innerHTML = `
+                <div class="flex justify-between items-center"><p class="font-semibold">#TJ123456</p><span class="font-bold text-lg">₹2,299</span></div>
+                <div class="flex justify-between items-center"><p class="font-semibold">#TJ123455</p><span class="font-bold text-lg">₹1,499</span></div>
+                <div class="flex justify-between items-center"><p class="font-semibold">#TJ123454</p><span class="font-bold text-lg">₹3,199</span></div>`;
+
+            const ordersTable = document.querySelector('#orders-page table');
+            ordersTable.innerHTML = `
+                <thead><tr class="border-b"><th class="py-2">Order ID</th><th>Customer</th><th>Date</th><th>Status</th><th>Total</th></tr></thead>
+                <tbody>
+                    <tr class="border-b"><td class="py-3">#TJ123456</td><td>Priya S.</td><td>Aug 2, 2025</td><td><span class="status-shipped px-2 py-1 rounded-full text-sm">Shipped</span></td><td>₹2,299</td></tr>
+                    <tr class="border-b"><td class="py-3">#TJ123455</td><td>Amit K.</td><td>Aug 2, 2025</td><td><span class="status-processing px-2 py-1 rounded-full text-sm">Processing</span></td><td>₹1,499</td></tr>
+                    <tr class="border-b"><td class="py-3">#TJ123454</td><td>Sunita P.</td><td>Aug 1, 2025</td><td><span class="status-delivered px-2 py-1 rounded-full text-sm">Delivered</span></td><td>₹3,199</td></tr>
+                </tbody>`;
+
+            const productsTable = document.querySelector('#products-page table');
+            productsTable.innerHTML = `
+                <thead><tr class="border-b"><th class="py-2">Image</th><th>Product Name</th><th>Stock</th><th>Price</th><th>Status</th></tr></thead>
+                <tbody>
+                    <tr class="border-b"><td class="py-3"><img src="https://images.pexels.com/photos/1620675/pexels-photo-1620675.jpeg?auto=compress&cs=tinysrgb&w=600" class="w-12 h-12 object-cover rounded-md"></td><td>Colorful Building Blocks</td><td>50</td><td>₹1,999</td><td><span class="text-green-500 font-semibold">Active</span></td></tr>
+                    <tr class="border-b"><td class="py-3"><img src="https://images.pexels.com/photos/35619/rc-car-toy-remote-model.jpg?auto=compress&cs=tinysrgb&w=600" class="w-12 h-12 object-cover rounded-md"></td><td>"Blaze" RC Monster Truck</td><td>8</td><td>₹3,199</td><td><span class="text-green-500 font-semibold">Active</span></td></tr>
+                </tbody>`;
+
+            const customersTable = document.querySelector('#customers-page table');
+            customersTable.innerHTML = `
+                <thead><tr class="border-b"><th class="py-2">Name</th><th>Email</th><th>Orders</th><th>Total Spent</th></tr></thead>
+                <tbody>
+                    <tr class="border-b"><td class="py-3">Priya S.</td><td>priya.s@example.com</td><td>5</td><td>₹12,500</td></tr>
+                    <tr class="border-b"><td class="py-3">Amit K.</td><td>amit.k@example.com</td><td>3</td><td>₹8,200</td></tr>
+                    <tr class="border-b"><td class="py-3">Sunita P.</td><td>sunita.p@example.com</td><td>8</td><td>₹25,100</td></tr>
+                </tbody>`;
+        });
+    </script>
+</body>
+</html>
