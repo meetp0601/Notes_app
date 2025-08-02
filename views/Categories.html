@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toy Categories - ToyJoy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F9FAFB;
+            color: #374151;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Nunito', sans-serif;
+            color: #1E3A8A;
+        }
+        .header-title {
+             font-family: 'Nunito', sans-serif;
+             font-weight: 900;
+             color: #1E3A8A;
+        }
+        .header-title span {
+            color: #3B82F6;
+        }
+        .category-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.5rem;
+            display: block;
+        }
+        .category-card img {
+            transition: transform 0.3s ease;
+        }
+        .category-card:hover img {
+            transform: scale(1.1);
+        }
+        .category-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s ease;
+            padding: 1rem;
+        }
+        .category-card:hover .category-overlay {
+            background: rgba(0, 0, 0, 0.6);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
+            <div class="text-4xl header-title">
+                <a href="index.html">Toy<span>Joy</span></a>
+            </div>
+            <nav class="hidden md:flex items-center space-x-8 font-semibold">
+                <a href="index.html" class="text-gray-600 hover:text-blue-600">Home</a>
+                <a href="shop.html" class="text-gray-600 hover:text-blue-600">Shop</a>
+                <a href="categories.html" class="text-blue-600">Categories</a>
+                <a href="about.html" class="text-gray-600 hover:text-blue-600">About Us</a>
+            </nav>
+            <div class="flex items-center space-x-4">
+                <button id="search-icon" class="text-gray-600 hover:text-blue-600"><i class="fas fa-search text-xl"></i></button>
+                <a href="cart.html" class="relative text-gray-600 hover:text-blue-600">
+                    <i class="fas fa-shopping-cart text-xl"></i>
+                    <span id="cart-count" class="absolute -top-2 -right-3 bg-orange-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                </a>
+                <button class="md:hidden" id="mobile-menu-button"><i class="fas fa-bars text-gray-600 text-2xl"></i></button>
+            </div>
+        </div>
+        <div id="search-bar" class="hidden bg-gray-100">
+            <div class="container mx-auto px-4 sm:px-6 py-3">
+                <input type="text" placeholder="Search for toys..." class="w-full px-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+        </div>
+        <div class="hidden md:hidden bg-white" id="mobile-menu">
+             <a href="index.html" class="block py-2 px-4 text-sm text-gray-600 hover:bg-blue-50">Home</a>
+            <a href="shop.html" class="block py-2 px-4 text-sm text-gray-600 hover:bg-blue-50">Shop</a>
+            <a href="categories.html" class="block py-2 px-4 text-sm text-blue-600 font-semibold">Categories</a>
+            <a href="about.html" class="block py-2 px-4 text-sm text-gray-600 hover:bg-blue-50">About Us</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 sm:px-6 py-16">
+        <div class="text-center mb-12">
+            <h1 class="text-4xl sm:text-5xl font-black">Browse by Category</h1>
+            <p class="text-lg text-gray-600 mt-2">Find the perfect toys by exploring our curated collections.</p>
+        </div>
+
+        <!-- Shop by Age Banner -->
+        <div class="bg-blue-50 border-l-4 border-blue-500 text-blue-800 p-4 rounded-md mb-12 text-center">
+            <p class="font-semibold">Not sure where to start? <a href="shop.html" class="font-bold underline hover:text-blue-600">Shop by Age</a> instead!</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Category Card 1 -->
+            <a href="shop.html" class="category-card shadow-lg">
+                 <div class="absolute top-2 right-2 bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full z-10">Most Popular</div>
+                <img src="https://images.pexels.com/photos/1620675/pexels-photo-1620675.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Building Blocks" class="w-full h-80 object-cover">
+                <div class="category-overlay">
+                    <h2 class="text-white text-3xl font-bold">Building Blocks</h2>
+                    <p class="text-white text-center mt-2">For endless imaginative play.</p>
+                </div>
+            </a>
+            <!-- Category Card 2 -->
+            <a href="shop.html" class="category-card shadow-lg">
+                <img src="https://images.pexels.com/photos/610935/pexels-photo-610935.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Plush Toys" class="w-full h-80 object-cover">
+                <div class="category-overlay">
+                    <h2 class="text-white text-3xl font-bold">Plush Toys</h2>
+                    <p class="text-white text-center mt-2">Soft friends for cuddles and comfort.</p>
+                </div>
+            </a>
+            <!-- Category Card 3 -->
+            <a href="shop.html" class="category-card shadow-lg">
+                <img src="https://images.pexels.com/photos/35619/rc-car-toy-remote-model.jpg?auto=compress&cs=tinysrgb&w=600" alt="Remote Control" class="w-full h-80 object-cover">
+                <div class="category-overlay">
+                    <h2 class="text-white text-3xl font-bold">Remote Control</h2>
+                    <p class="text-white text-center mt-2">For high-speed thrills and adventure.</p>
+                </div>
+            </a>
+            <!-- Category Card 4 -->
+            <a href="shop.html" class="category-card shadow-lg">
+                <img src="https://images.pexels.com/photos/716107/pexels-photo-716107.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Arts & Crafts" class="w-full h-80 object-cover">
+                <div class="category-overlay">
+                    <h2 class="text-white text-3xl font-bold">Arts & Crafts</h2>
+                    <p class="text-white text-center mt-2">To unleash their inner artist.</p>
+                </div>
+            </a>
+            <!-- Category Card 5 -->
+            <a href="shop.html" class="category-card shadow-lg">
+                <img src="https://images.pexels.com/photos/4491446/pexels-photo-4491446.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Educational Toys" class="w-full h-80 object-cover">
+                <div class="category-overlay">
+                    <h2 class="text-white text-3xl font-bold">Educational</h2>
+                    <p class="text-white text-center mt-2">Toys that make learning fun.</p>
+                </div>
+            </a>
+            <!-- Category Card 6 -->
+            <a href="shop.html" class="category-card shadow-lg">
+                <img src="https://images.pexels.com/photos/3661242/pexels-photo-3661242.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Vehicles" class="w-full h-80 object-cover">
+                <div class="category-overlay">
+                    <h2 class="text-white text-3xl font-bold">Vehicles</h2>
+                    <p class="text-white text-center mt-2">For little ones on the move.</p>
+                </div>
+            </a>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="bg-navy-800 text-white pt-16 pb-8 mt-12" style="background-color: #1E3A8A;">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 text-left">
+                <!-- Footer content here -->
+            </div>
+            <div class="mt-16 border-t border-blue-700 pt-8 text-center text-blue-200">
+                <p>&copy; 2025 ToyJoy. All Rights Reserved. | Ahmedabad, Gujarat, India</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Header toggles
+            document.getElementById('mobile-menu-button')?.addEventListener('click', () => document.getElementById('mobile-menu').classList.toggle('hidden'));
+            document.getElementById('search-icon')?.addEventListener('click', () => document.getElementById('search-bar').classList.toggle('hidden'));
+
+            // Populate Footer
+            const footerContainer = document.querySelector('footer .grid');
+            footerContainer.innerHTML = `<div class="col-span-1 md:col-span-2 lg:col-span-1"><h3 class="text-2xl font-black text-white">Toy<span class="text-blue-400">Joy</span></h3><p class="mt-4 text-blue-200">Bringing smiles to children across India with the very best toys.</p><div class="mt-6 flex space-x-4"><a href="#" class="text-blue-200 hover:text-white text-2xl"><i class="fab fa-facebook-f"></i></a><a href="#" class="text-blue-200 hover:text-white text-2xl"><i class="fab fa-instagram"></i></a><a href="#" class="text-blue-200 hover:text-white text-2xl"><i class="fab fa-twitter"></i></a><a href="#" class="text-blue-200 hover:text-white text-2xl"><i class="fab fa-pinterest"></i></a></div></div><div><h4 class="text-lg font-bold text-white">Shop</h4><ul class="mt-4 space-y-2"><li><a href="#" class="text-blue-200 hover:text-white">New Arrivals</a></li><li><a href="#" class="text-blue-200 hover:text-white">Best Sellers</a></li><li><a href="#" class="text-blue-200 hover:text-white">Sale</a></li><li><a href="#" class="text-blue-200 hover:text-white">Gift Cards</a></li></ul></div><div><h4 class="text-lg font-bold text-white">Support</h4><ul class="mt-4 space-y-2"><li><a href="contact.html" class="text-blue-200 hover:text-white">Contact Us</a></li><li><a href="#" class="text-blue-200 hover:text-white">FAQs</a></li><li><a href="#" class="text-blue-200 hover:text-white">Shipping & Returns</a></li><li><a href="#" class="text-blue-200 hover:text-white">Track Your Order</a></li></ul></div><div><h4 class="text-lg font-bold text-white">Join the Fun!</h4><p class="mt-4 text-blue-200">Get the latest on new toys, special offers, and play ideas.</p><form class="mt-4 flex"><input type="email" class="w-full p-2 rounded-l-md border-0 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Your email" required><button type="submit" class="bg-orange-500 text-white font-bold px-4 py-2 rounded-r-md hover:bg-orange-600 transition">Go</button></form></div>`;
+        });
+    </script>
+</body>
+</html>
